@@ -79,7 +79,7 @@ public class Option {
     return flag == shortFlag || flag == longFlag
   }
   
-  func setValue(values: [String]) -> Bool {
+  public func setValue(values: [String]) -> Bool {
     return false
   }
 }
@@ -99,7 +99,7 @@ public class BoolOption: Option {
     return _value
   }
   
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     _value = true
     return true
   }
@@ -117,7 +117,7 @@ public class IntOption: Option {
     return _value != nil
   }
 
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -146,7 +146,7 @@ public class CounterOption: Option {
     return _value > 0
   }
   
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     _value += 1
     return true
   }
@@ -164,7 +164,7 @@ public class DoubleOption: Option {
     return _value != nil
   }
   
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -190,7 +190,7 @@ public class StringOption: Option {
     return _value != nil
   }
   
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -212,7 +212,7 @@ public class MultiStringOption: Option {
     return _value != nil
   }
   
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -256,7 +256,7 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
   
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
