@@ -92,7 +92,7 @@ public class Option {
     return flag == shortFlag || flag == longFlag
   }
   
-  func setValue(values: [String]) -> Bool {
+  public func setValue(values: [String]) -> Bool {
     return false
   }
   #endif
@@ -114,12 +114,12 @@ public class BoolOption: Option {
   }
 
   #if swift(>=3.0)
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     _value = true
     return true
   }
   #else
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     _value = true
     return true
   }
@@ -143,7 +143,7 @@ public class IntOption: Option {
   }
 
   #if swift(>=3.0)
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -156,7 +156,7 @@ public class IntOption: Option {
     return false
   }
   #else
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -191,12 +191,12 @@ public class CounterOption: Option {
   }
 
   #if swift(>=3.0)
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     _value += 1
     return true
   }
   #else
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     _value += 1
     return true
   }
@@ -221,7 +221,7 @@ public class DoubleOption: Option {
 
   #if swift(>=3.0)
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -236,7 +236,7 @@ public class DoubleOption: Option {
 
   #else
 
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -270,7 +270,7 @@ public class StringOption: Option {
 
   #if swift(>=3.0)
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -281,7 +281,7 @@ public class StringOption: Option {
 
   #else
 
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -315,7 +315,7 @@ public class MultiStringOption: Option {
 
   #if swift(>=3.0)
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -326,7 +326,7 @@ public class MultiStringOption: Option {
 
   #else
 
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -378,7 +378,7 @@ public class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -432,7 +432,7 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  override func setValue(values: [String]) -> Bool {
+  override public func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
