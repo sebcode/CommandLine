@@ -53,6 +53,17 @@ private struct StderrOutputStream: OutputStreamType {
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
+  private var _usedFlags: Set<String> {
+    var usedFlags = Set<String>(minimumCapacity: _options.count * 2)
+
+    for option in _options {
+      for case let flag? in [option.shortFlag, option.longFlag] {
+        usedFlags.insert(flag)
+      }
+    }
+
+    return usedFlags
+  }
   
   /** A ParseError is thrown if the `parse()` method fails. */
   public enum ParseError: ErrorType, CustomStringConvertible {
@@ -129,6 +140,11 @@ public class CommandLine {
    * - parameter option: The option to add.
    */
   public func addOption(option: Option) {
+    let uf = _usedFlags
+    for case let flag? in [option.shortFlag, option.longFlag] {
+      assert(!uf.contains(flag), "Flag '\(flag)' already in use")
+    }
+
     _options.append(option)
   }
   
@@ -138,7 +154,9 @@ public class CommandLine {
    * - parameter options: An array containing the options to add.
    */
   public func addOptions(options: [Option]) {
-    _options += options
+    for o in options {
+      addOption(o)
+    }
   }
   
   /**
@@ -147,7 +165,9 @@ public class CommandLine {
    * - parameter options: The options to add.
    */
   public func addOptions(options: Option...) {
-    _options += options
+    for o in options {
+      addOption(o)
+    }
   }
   
   /**
@@ -197,35 +217,31 @@ public class CommandLine {
       let flag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
       
       var flagMatched = false
-      for option in _options {
-        if option.flagMatch(flag) {
-          let vals = self._getFlagValues(idx)
-          guard option.setValue(vals) else {
-            throw ParseError.InvalidValueForOption(option, vals)
-          }
-          
-          flagMatched = true
-          break
+      for option in _options where option.flagMatch(flag) {
+        let vals = self._getFlagValues(idx)
+        guard option.setValue(vals) else {
+          throw ParseError.InvalidValueForOption(option, vals)
         }
+          
+        flagMatched = true
+        break
       }
       
       /* Flags that do not take any arguments can be concatenated */
       let flagLength = flag.characters.count
       if !flagMatched && !arg.hasPrefix(LongOptionPrefix) {
         for (i, c) in flag.characters.enumerate() {
-          for option in _options {
-            if option.flagMatch(String(c)) {
-              /* Values are allowed at the end of the concatenated flags, e.g.
-               * -xvf <file1> <file2>
-               */
-              let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
-              guard option.setValue(vals) else {
-                throw ParseError.InvalidValueForOption(option, vals)
-              }
-              
-              flagMatched = true
-              break
+          for option in _options where option.flagMatch(String(c)) {
+            /* Values are allowed at the end of the concatenated flags, e.g.
+            * -xvf <file1> <file2>
+            */
+            let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
+            guard option.setValue(vals) else {
+              throw ParseError.InvalidValueForOption(option, vals)
             }
+            
+            flagMatched = true
+            break
           }
         }
       }
@@ -260,10 +276,10 @@ public class CommandLine {
       flagWidth = max(flagWidth, "  \(opt.flagDescription):".characters.count)
     }
 
-    print("Usage: \(name) [options]", to)
+    print("Usage: \(name) [options]", toStream: &to)
     for opt in _options {
       let flags = "  \(opt.flagDescription):".paddedToWidth(flagWidth)
-      print("\(flags)\n      \(opt.helpMessage)", to)
+      print("\(flags)\n      \(opt.helpMessage)", toStream: &to)
     }
   }
   
@@ -275,7 +291,7 @@ public class CommandLine {
    * - parameter to: An OutputStreamType to write the error message to.
    */
   public func printUsage<TargetStream: OutputStreamType>(error: ErrorType, inout to: TargetStream) {
-    print("\(error)\n", to)
+    print("\(error)\n", toStream: &to)
     printUsage(&to)
   }
   
