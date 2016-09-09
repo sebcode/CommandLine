@@ -18,14 +18,14 @@
 /**
  * The base class for a command-line option.
  */
-public class Option {
+open class Option {
   public let shortFlag: String?
   public let longFlag: String?
   public let required: Bool
   public let helpMessage: String
   
   /** True if the option was set when parsing command-line arguments */
-  public var wasSet: Bool {
+  open var wasSet: Bool {
     return false
   }
 
@@ -79,23 +79,13 @@ public class Option {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  #if swift(>=3.0)
   func flagMatch(_ flag: String) -> Bool {
     return flag == shortFlag || flag == longFlag
   }
   
-  func setValue(_ values: [String]) -> Bool {
+  open func setValue(_ values: [String]) -> Bool {
     return false
   }
-  #else
-  func flagMatch(flag: String) -> Bool {
-    return flag == shortFlag || flag == longFlag
-  }
-  
-  public func setValue(values: [String]) -> Bool {
-    return false
-  }
-  #endif
 }
 
 /**
@@ -109,21 +99,14 @@ public class BoolOption: Option {
     return _value
   }
 
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value
   }
 
-  #if swift(>=3.0)
-  override public func setValue(_ values: [String]) -> Bool {
+  override open func setValue(_ values: [String]) -> Bool {
     _value = true
     return true
   }
-  #else
-  override public func setValue(values: [String]) -> Bool {
-    _value = true
-    return true
-  }
-  #endif
 }
 
 /**  An option that accepts a positive or negative integer value. */
@@ -134,7 +117,7 @@ public class IntOption: Option {
     return _value
   }
   
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value != nil
   }
 
@@ -142,8 +125,7 @@ public class IntOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  #if swift(>=3.0)
-  override public func setValue(_ values: [String]) -> Bool {
+  override open func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -155,20 +137,6 @@ public class IntOption: Option {
 
     return false
   }
-  #else
-  override public func setValue(values: [String]) -> Bool {
-    if values.count == 0 {
-      return false
-    }
-    
-    if let val = Int(values[0]) {
-      _value = val
-      return true
-    }
-    
-    return false
-  }
-  #endif
 }
 
 /**
@@ -182,7 +150,7 @@ public class CounterOption: Option {
     return _value
   }
   
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value > 0
   }
 
@@ -190,17 +158,10 @@ public class CounterOption: Option {
     _value = 0
   }
 
-  #if swift(>=3.0)
-  override public func setValue(_ values: [String]) -> Bool {
+  override open func setValue(_ values: [String]) -> Bool {
     _value += 1
     return true
   }
-  #else
-  override public func setValue(values: [String]) -> Bool {
-    _value += 1
-    return true
-  }
-  #endif
 }
 
 /**  An option that accepts a positive or negative floating-point value. */
@@ -211,7 +172,7 @@ public class DoubleOption: Option {
     return _value
   }
 
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value != nil
   }
 
@@ -219,9 +180,7 @@ public class DoubleOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  #if swift(>=3.0)
-
-  override public func setValue(_ values: [String]) -> Bool {
+  override open func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -233,23 +192,6 @@ public class DoubleOption: Option {
 
     return false
   }
-
-  #else
-
-  override public func setValue(values: [String]) -> Bool {
-    if values.count == 0 {
-      return false
-    }
-    
-    if let val = values[0].toDouble() {
-      _value = val
-      return true
-    }
-    
-    return false
-  }
-
-  #endif
 }
 
 /**  An option that accepts a string value. */
@@ -260,7 +202,7 @@ public class StringOption: Option {
     return _value
   }
   
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value != nil
   }
 
@@ -268,9 +210,7 @@ public class StringOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  #if swift(>=3.0)
-
-  override public func setValue(_ values: [String]) -> Bool {
+  override open func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -278,19 +218,6 @@ public class StringOption: Option {
     _value = values[0]
     return true
   }
-
-  #else
-
-  override public func setValue(values: [String]) -> Bool {
-    if values.count == 0 {
-      return false
-    }
-
-    _value = values[0]
-    return true
-  }
-
-  #endif
 }
 
 /**  An option that accepts one or more string values. */
@@ -301,7 +228,7 @@ public class MultiStringOption: Option {
     return _value
   }
   
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value != nil
   }
 
@@ -313,9 +240,7 @@ public class MultiStringOption: Option {
     return 0
   }
 
-  #if swift(>=3.0)
-
-  override public func setValue(_ values: [String]) -> Bool {
+  override open func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -323,19 +248,6 @@ public class MultiStringOption: Option {
     _value = values
     return true
   }
-
-  #else
-
-  override public func setValue(values: [String]) -> Bool {
-    if values.count == 0 {
-      return false
-    }
-
-    _value = values
-    return true
-  }
-
-  #endif
 }
 
 #if swift(>=3.0)
@@ -347,7 +259,7 @@ public class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
     return _value
   }
 
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value != nil
   }
 
@@ -378,7 +290,7 @@ public class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  override public func setValue(_ values: [String]) -> Bool {
+  override open func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -401,7 +313,7 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     return _value
   }
 
-  override public var wasSet: Bool {
+  override open var wasSet: Bool {
     return _value != nil
   }
 
@@ -432,7 +344,7 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  override public func setValue(values: [String]) -> Bool {
+  override open func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
