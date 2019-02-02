@@ -20,14 +20,6 @@ import XCTest
 @testable import CommandLineKit
 
 class StringExtensionTests: XCTestCase {
-  static var allTests : [(String, (StringExtensionTests) -> () throws -> Void)] {
-    return [
-      ("testToDouble", testToDouble),
-      ("testSplit", testSplit),
-      ("testPadded", testPadded),
-      ("testWrapped", testWrapped),
-    ]
-  }
 
   override func setUp() {
     /* set locale to "C" to start with '.' as the decimal separator */
@@ -84,7 +76,7 @@ class StringExtensionTests: XCTestCase {
     XCTAssertNil(n, "Parsed poo")
 
     /* Locale handling */
-    setlocale(LC_NUMERIC, "sv_SE.UTF-8")
+    setlocale(LC_NUMERIC, "pl_PL.UTF-8")
 
     let o = "888,8".toDouble()
     XCTAssert(o == 888.8, "Failed to parse double in alternate locale")

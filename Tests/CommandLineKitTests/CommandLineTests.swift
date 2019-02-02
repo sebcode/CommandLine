@@ -20,38 +20,6 @@ import XCTest
 @testable import CommandLineKit
 
 internal class CommandLineTests: XCTestCase {
-  static var allTests : [(String, (CommandLineTests) -> () throws -> Void)] {
-    return [
-      ("testBoolOptions", testBoolOptions),
-      ("testIntOptions", testIntOptions),
-      ("testCounterOptions", testCounterOptions),
-      ("testDoubleOptions", testDoubleOptions),
-      ("testDoubleOptionsInAlternateLocale", testDoubleOptionsInAlternateLocale),
-      ("testStringOptions", testStringOptions),
-      ("testMultiStringOptions", testMultiStringOptions),
-      ("testConcatOptionWithValue", testConcatOptionWithValue),
-      ("testMissingRequiredOption", testMissingRequiredOption),
-      ("testAttachedArgumentValues", testAttachedArgumentValues),
-      ("testEmojiOptions", testEmojiOptions),
-      ("testEnumOption", testEnumOption),
-      ("testArgumentStopper", testArgumentStopper),
-      ("testFlagStyles", testFlagStyles),
-      ("testEmptyFlags", testEmptyFlags),
-      ("testDifferentCaseFlagReuse", testDifferentCaseFlagReuse),
-      ("testMixedExample", testMixedExample),
-      ("testWasSetProperty", testWasSetProperty),
-      ("testShortFlagOnlyOption", testShortFlagOnlyOption),
-      ("testLongFlagOnlyOption", testLongFlagOnlyOption),
-      ("testStrictMode", testStrictMode),
-      ("testUnparsedArguments", testUnparsedArguments),
-      ("testInvalidArgumentErrorDescription", testInvalidArgumentErrorDescription),
-      ("testMissingRequiredOptionsErrorDescription", testMissingRequiredOptionsErrorDescription),
-      ("testPrintUsage", testPrintUsage),
-      ("testPrintUsageError", testPrintUsageError),
-      ("testPrintUsageToStderr", testPrintUsageToStderr),
-      ("testCustomOutputFormatter", testCustomOutputFormatter),
-    ]
-  }
 
   override func setUp() {
     /* set locale to "C" to start with '.' as the decimal separator */
