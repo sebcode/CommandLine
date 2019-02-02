@@ -1,16 +1,18 @@
-matrix:
-  include:
-    - os: osx
-      language: objective-c # this is a lie
-      xcode_project: CommandLine.xcodeproj
-      xcode_scheme: CommandLine
-      script: xcodebuild -scheme CommandLine test
-      osx_image: xcode10.1
-    - os: linux
-      dist: trusty
-      sudo: false
-      services: docker
-      before_install:
-        - docker pull swiftdocker/swift:latest
-      script:
-        - docker run -v "$(pwd):/src" swiftdocker/swift:latest /src/script/test
+os:
+  - linux
+  - osx
+language: generic
+sudo: required
+dist: trusty
+osx_image: xcode10.1
+env:
+    - SWIFT_VERSION=4.0
+    - SWIFT_VERSION=4.1
+    - SWIFT_VERSION=4.2
+install:
+  - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+script:
+  - swift test
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
