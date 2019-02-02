@@ -1,7 +1,4 @@
-os:
-#   - linux
-  - osx
-language: generic
+language: objective-c
 sudo: required
 dist: xenial
 osx_image: xcode10.1
@@ -10,7 +7,7 @@ env:
 install:
   - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
 script:
-  - swift test
+  - xcodebuild test -scheme CommandLine -enableCodeCoverage YES
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
