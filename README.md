@@ -1,6 +1,7 @@
 [![Repo status](https://img.shields.io/badge/maintain-yes-brightgreen.svg)]()
 [![Build Status](https://travis-ci.org/quver/CommandLine.svg)](https://travis-ci.org/quver/CommandLine)
 [![codecov](https://codecov.io/gh/quver/CommandLine/branch/master/graph/badge.svg)](https://codecov.io/gh/quver/CommandLine)
+[![Readme Score](http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/quver/commandline)](http://clayallsopp.github.io/readme-score?url=https://github.com/quver/commandline)
 [![Issues](https://img.shields.io/github/issues/quver/CommandLine.svg?style=flat)](https://github.com/quver/CommandLine/issues)
 [![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager)
 
