@@ -1,3 +1,8 @@
+[![Repo status](https://img.shields.io/badge/maintain-yes-green.svg)]()
+[![Build Status](https://travis-ci.org/quver/CommandLine.svg)](https://travis-ci.org/quver/CommandLine)
+[![GitHub license](https://img.shields.io/github/license/quver/CommandLine.svg)]()
+[![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager)
+
 # CommandLineKit 
 
 A pure Swift library for creating command-line interfaces.
